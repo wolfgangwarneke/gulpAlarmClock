@@ -8,28 +8,35 @@ function AlarmClock() {
 
 AlarmClock.prototype.setAlarm = function(time) {
   this.alarmTime = time;
-}
+};
 
 AlarmClock.prototype.triggerAlarm = function() {
   this.alarmRing = true;
-}
+};
 
 AlarmClock.prototype.turnOffAlarm = function() {
   this.alarmRing = false;
-}
+  this.alarmTime = null;
+};
+
+AlarmClock.prototype.snooze = function() {
+  this.alarmTime = moment().add(1, 'minutes').format("HH:mm");
+  this.alarmRing = false;
+};
 
 AlarmClock.prototype.refreshTime = function() {
     this.currentTime = moment().format("HH:mm");
     return this.currentTime;
-}
+};
 
 exports.alarmClockModule = AlarmClock;
 
 },{}],2:[function(require,module,exports){
 var AlarmClock = require('./../js/alarmclock.js').alarmClockModule;
+var newAlarmClock = new AlarmClock();
 
 $(document).ready(function(){
-  var newAlarmClock = new AlarmClock();
+
   setInterval(function() {
     var currentTimeDigits = newAlarmClock.refreshTime().split("");
     for ( i = 0 ; i < 5 ; i ++ ) {
@@ -40,20 +47,32 @@ $(document).ready(function(){
       $('#alarmMessage').text('ALARM IS GOING OFF');
     }
   }, 1000);
+  
   $('.set-alarm').submit(function(event) {
     event.preventDefault();
     var newAlarmTime = $('input#set-alarm').val();
     console.log(newAlarmTime);
     newAlarmClock.setAlarm(newAlarmTime);
   });
+
   $('.turn-off-alarm').submit(function(event) {
     event.preventDefault();
+    console.log("click");
     if (newAlarmClock.alarmRing === true) {
+      console.log("alarmRing is true");
       newAlarmClock.turnOffAlarm();
-      newAlarmClock.alarmTime = null;
-      $('#alarmMessage').text('Alarm was turned off. Just go back to sleep.');
+      $('#alarmMessage').text('Alarm was turned off. GET UP AND OUT OF BED!');
     }
   });
+
+  $('.snooze').submit(function(event) {
+    event.preventDefault();
+    if (newAlarmClock.alarmRing === true) {
+      newAlarmClock.snooze();
+      $('#alarmMessage').text('Sssshhh.  Go back to sleeeeep.');
+    }
+  });
+
 });
 
 },{"./../js/alarmclock.js":1}]},{},[2]);
