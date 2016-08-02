@@ -3,10 +3,19 @@ function AlarmClock() {
   this.currentTime = moment().format("HH:mm");
   this.alarmTime = null;
   this.keepingTime = true;
+  this.alarmRing = false;
 }
 
 AlarmClock.prototype.setAlarm = function(time) {
   this.alarmTime = time;
+}
+
+AlarmClock.prototype.triggerAlarm = function() {
+  this.alarmRing = true;
+}
+
+AlarmClock.prototype.turnOffAlarm = function() {
+  this.alarmRing = false;
 }
 
 AlarmClock.prototype.refreshTime = function() {
@@ -26,8 +35,25 @@ $(document).ready(function(){
     for ( i = 0 ; i < 5 ; i ++ ) {
       $(".digit").eq(i).text(currentTimeDigits[i]);
     }
+    if (newAlarmClock.currentTime === newAlarmClock.alarmTime) {
+      newAlarmClock.triggerAlarm();
+      $('#alarmMessage').text('ALARM IS GOING OFF');
+    }
   }, 1000);
-
+  $('.set-alarm').submit(function(event) {
+    event.preventDefault();
+    var newAlarmTime = $('input#set-alarm').val();
+    console.log(newAlarmTime);
+    newAlarmClock.setAlarm(newAlarmTime);
+  });
+  $('.turn-off-alarm').submit(function(event) {
+    event.preventDefault();
+    if (newAlarmClock.alarmRing === true) {
+      newAlarmClock.turnOffAlarm();
+      newAlarmClock.alarmTime = null;
+      $('#alarmMessage').text('Alarm was turned off. Just go back to sleep.');
+    }
+  });
 });
 
 },{"./../js/alarmclock.js":1}]},{},[2]);
