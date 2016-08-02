@@ -24,7 +24,14 @@ AlarmClock.prototype.turnOffAlarm = function() {
 };
 
 AlarmClock.prototype.snooze = function(minutesAmt) {
-  this.alarmTime = moment().add(minutesAmt, 'minutes').format("HH:mm");
+  var search = this.refreshTime();
+  this.alarmRing = false;
+  for (var i=this.alarmTime.length-1; i>=0; i--) {
+      if (this.alarmTime[i] === search) {
+          this.alarmTime.splice(i, 1);
+      }
+  }
+  this.alarmTime.push(moment().add(minutesAmt, 'minutes').format("HH:mm"));
   this.alarmRing = false;
 };
 
