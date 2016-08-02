@@ -1,12 +1,12 @@
 function AlarmClock() {
   this.currentTime = moment().format("HH:mm");
-  this.alarmTime = null;
+  this.alarmTime = [];
   this.keepingTime = true;
   this.alarmRing = false;
 }
 
 AlarmClock.prototype.setAlarm = function(time) {
-  this.alarmTime = time;
+  this.alarmTime.push(time);
 };
 
 AlarmClock.prototype.triggerAlarm = function() {
@@ -14,8 +14,13 @@ AlarmClock.prototype.triggerAlarm = function() {
 };
 
 AlarmClock.prototype.turnOffAlarm = function() {
+  var search = this.refreshTime();
   this.alarmRing = false;
-  this.alarmTime = null;
+  for (var i=this.alarmTime.length-1; i>=0; i--) {
+      if (this.alarmTime[i] === search) {
+          this.alarmTime.splice(i, 1);
+      }
+  }
 };
 
 AlarmClock.prototype.snooze = function(minutesAmt) {
