@@ -18,8 +18,8 @@ AlarmClock.prototype.turnOffAlarm = function() {
   this.alarmTime = null;
 };
 
-AlarmClock.prototype.snooze = function() {
-  this.alarmTime = moment().add(1, 'minutes').format("HH:mm");
+AlarmClock.prototype.snooze = function(minutesAmt) {
+  this.alarmTime = moment().add(minutesAmt, 'minutes').format("HH:mm");
   this.alarmRing = false;
 };
 

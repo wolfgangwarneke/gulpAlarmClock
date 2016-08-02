@@ -13,7 +13,7 @@ $(document).ready(function(){
       $('#alarmMessage').text('ALARM IS GOING OFF');
     }
   }, 1000);
-  
+
   $('.set-alarm').submit(function(event) {
     event.preventDefault();
     var newAlarmTime = $('input#set-alarm').val();
@@ -34,7 +34,7 @@ $(document).ready(function(){
   $('.snooze').submit(function(event) {
     event.preventDefault();
     if (newAlarmClock.alarmRing === true) {
-      newAlarmClock.snooze();
+      newAlarmClock.snooze(parseInt($('#minutes').val()));
       $('#alarmMessage').text('Sssshhh.  Go back to sleeeeep.');
     }
   });
